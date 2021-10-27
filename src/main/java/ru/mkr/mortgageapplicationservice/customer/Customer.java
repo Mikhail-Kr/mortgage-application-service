@@ -39,6 +39,21 @@ public class Customer {
     this.status = status;
   }
 
+  public Customer(String id, String firstName, String secondName, String lastName,
+                  String passport, LocalDate birthDate, Gender gender,
+                  int salary, int creditAmount, int durationInMonth) {
+    this.id = id;
+    this.firstName = firstName;
+    this.secondName = secondName;
+    this.lastName = lastName;
+    this.passport = passport;
+    this.birthDate = birthDate;
+    this.gender = gender;
+    this.salary = salary;
+    this.creditAmount = creditAmount;
+    this.durationInMonth = durationInMonth;
+  }
+
   public String getId() {
     return id;
   }
@@ -120,7 +135,11 @@ public class Customer {
   }
 
   public String getStatus() {
-    return status;
+    if(status != null) {
+      return status;
+    } else {
+      return "PROCESSING";
+    }
   }
 
   public void setStatus(String status) {

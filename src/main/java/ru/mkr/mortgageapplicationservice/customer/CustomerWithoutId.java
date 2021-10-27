@@ -17,7 +17,6 @@ public class CustomerWithoutId {
   private int salary;
   private int creditAmount;
   private int durationInMonth;
-  String status;
 
   public CustomerWithoutId(String firstName, String secondName, String lastName,
                            String passport, LocalDate birthDate, Customer.Gender gender,
@@ -36,7 +35,7 @@ public class CustomerWithoutId {
 
   public Customer getCustomer(CustomerWithoutId customer) {
     return new Customer(generateId(), customer.getFirstName(), customer.getSecondName(), customer.getLastName(), customer.getPassport(),
-        customer.getBirthDate(), customer.getGender(), customer.getSalary(), customer.getCreditAmount(), customer.getDurationInMonth(), customer.getStatus());
+        customer.getBirthDate(), customer.getGender(), customer.getSalary(), customer.getCreditAmount(), customer.getDurationInMonth());
   }
 
   private String generateId() {
@@ -114,18 +113,6 @@ public class CustomerWithoutId {
 
   public void setDurationInMonth(int durationInMonth) {
     this.durationInMonth = durationInMonth;
-  }
-
-  public String getStatus() {
-    if(status != null) {
-      return status;
-    } else {
-      return "PROCESSING";
-    }
-  }
-
-  public void setStatus(String status) {
-    this.status = status;
   }
 
   public enum Gender {
