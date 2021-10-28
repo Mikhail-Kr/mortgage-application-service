@@ -11,24 +11,24 @@ public class Customer {
   @Id
   @Column(name = "id", nullable = false)
   private String id;
-  @Column(name = "firstName")
+  @Column(name = "first_Name")
   private String firstName;
-  @Column(name = "secondName")
+  @Column(name = "second_Name")
   private String secondName;
-  @Column(name = "lastname")
+  @Column(name = "last_name")
   private String lastName;
   @Column(name = "passport")
   private String passport;
-  @Column(name = "birthDate")
+  @Column(name = "birth_Date")
   private LocalDate birthDate;
   @Column(name = "gender")
   @Enumerated(EnumType.STRING)
   private Gender gender;
   @Column(name = "salary")
   private int salary;
-  @Column(name = "creditAmount")
+  @Column(name = "credit_Amount")
   private int creditAmount;
-  @Column(name = "durationInMonth")
+  @Column(name = "duration_In_Month")
   private int durationInMonth;
   @Column(name = "status")
   private String status;

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+    <changeSet id="Schema" author="MKR">
+        <createTable tableName="customer">
+            <column name="id" type="varchar">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="FIRST_NAME" type="varchar"/>
+            <column name="SECOND_NAME" type="varchar"/>
+            <column name="LAST_NAME" type="varchar"/>
+            <column name="passport" type="varchar"/>
+            <column name="BIRTH_DATE" type="varchar"/>
+            <column name="gender" type="varchar"/>
+            <column name="salary" type="number"/>
+            <column name="CREDIT_AMOUNT" type="number"/>
+            <column name="DURATION_IN_MONTH" type="int"/>
+            <column name="status" type="varchar"/>
+            <column name="monthly_Payment" type="number"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
