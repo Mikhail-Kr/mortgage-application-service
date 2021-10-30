@@ -7,5 +7,6 @@ import org.springframework.stereotype.Repository;
 public interface CustomerRepository
     extends JpaRepository<Customer, String> {
 
-  Customer findByPassport(String passport);
+  Customer findByFirstNameAndSecondNameAndLastNameAndPassport(String firstName, String secondName,
+                                                              String lastName, String passport);
 }

@@ -3,6 +3,7 @@ package ru.mkr.mortgageapplicationservice.customer;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
@@ -30,15 +31,18 @@ public class Customer {
   private int creditAmount;
   @Column(name = "duration_In_Month")
   private int durationInMonth;
+  @Enumerated(EnumType.STRING)
   @Column(name = "status")
-  private String status;
+  private Status status;
+  @Column(name = "monthly_Payment")
+  private BigDecimal monthlyPayment;
 
   public Customer() {
   }
 
   public Customer(String id, String firstName, String secondName, String lastName,
                   String passport, LocalDate birthDate, Gender gender,
-                  int salary, int creditAmount, int durationInMonth, String status) {
+                  int salary, int creditAmount, int durationInMonth, Status status) {
     this.id = id;
     this.firstName = firstName;
     this.secondName = secondName;
@@ -81,16 +85,12 @@ public class Customer {
     this.durationInMonth = durationInMonth;
   }
 
-  public String getStatus() {
-    if(status != null) {
-      return status;
-    } else {
-      return "PROCESSING";
-    }
-  }
-
-  public enum Gender {
-    MALE,
-    FEMALE
+  public boolean poleNoEmpty() {
+    return this.firstName != null &&
+            this.secondName != null &&
+            this.lastName != null &&
+            this.passport != null &&
+            this.birthDate != null &&
+            this.gender != null;
   }
 }

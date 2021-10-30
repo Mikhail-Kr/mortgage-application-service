@@ -16,13 +16,13 @@ public class CustomerWithoutId {
   private String passport;
   private LocalDate birthDate;
   @Enumerated(EnumType.STRING)
-  private Customer.Gender gender;
+  private Gender gender;
   private int salary;
   private int creditAmount;
   private int durationInMonth;
 
   public CustomerWithoutId(String firstName, String secondName, String lastName,
-                           String passport, LocalDate birthDate, Customer.Gender gender,
+                           String passport, LocalDate birthDate, Gender gender,
                            int salary, int creditAmount, int durationInMonth) {
     this.firstName = firstName;
     this.secondName = secondName;
@@ -48,10 +48,5 @@ public class CustomerWithoutId {
 
   private String generateId() {
     return UUID.randomUUID().toString();
-  }
-
-  public enum Gender {
-    MALE,
-    FEMALE
   }
 }
