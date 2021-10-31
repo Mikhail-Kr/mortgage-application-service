@@ -18,7 +18,7 @@
             <column name="CREDIT_AMOUNT" type="number"/>
             <column name="DURATION_IN_MONTHS" type="int"/>
             <column name="status" type="varchar"/>
-            <column name="monthly_Payment" type="number"/>
+            <column name="monthly_payment" type="number"/>
         </createTable>
     </changeSet>
 </databaseChangeLog>
