@@ -6,14 +6,17 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import liquibase.pro.packaged.S;
 import org.openapitools.client.api.MortgageCalculatorApi;
 import org.openapitools.client.model.MortgageCalculateParams;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.mkr.mortgageapplicationservice.customer.Customer;
 import ru.mkr.mortgageapplicationservice.customer.CustomerRepository;
 import ru.mkr.mortgageapplicationservice.customer.CustomerWithoutId;
+import ru.mkr.mortgageapplicationservice.customer.Status;
 
 import java.math.BigDecimal;
 import java.util.Collections;
@@ -69,12 +72,14 @@ public class CustomerController {
             }
     )
     @GetMapping("/customer/{id}")
-    ResponseEntity<Optional<Customer>> getCustomer(@PathVariable String id) {
-        if (customerRepository.findById(id).isEmpty()) {
-            return ResponseEntity.notFound().build();
-        } else {
-            return ResponseEntity.ok(customerRepository.findById(id));
+    public ResponseEntity getByID(@PathVariable("id") String id) {
+        Optional<Customer> userOpt;
+        userOpt = customerRepository.findById(id);
+        if (userOpt.isPresent()) {
+            return ResponseEntity.of(userOpt);
         }
+        return ResponseEntity.badRequest().
+            body(Collections.singletonMap("error", "Application not exist"));
     }
 
     @Operation(
@@ -97,12 +102,22 @@ public class CustomerController {
             MortgageCalculateParams calculateParams= new MortgageCalculateParams();
             calculateParams.setCreditAmount(BigDecimal.valueOf(customerWithId.getCreditAmount()));
             calculateParams.setDurationInMonths(customerWithId.getDurationInMonth());
-            var monthlyPayment = mortgageCalculatorApi.calculate(calculateParams);
+            var monthlyPayment = mortgageCalculatorApi.calculate(calculateParams).getMonthlyPayment();
             if(!customerWithId.poleNoEmpty()) {
                 return ResponseEntity.badRequest().
                         body(Collections.singletonMap("error", "one of the fields is null"));
             }
-            return ResponseEntity.ok(customerWithId);
+            if(customer.getSalary()/monthlyPayment.doubleValue() >= 2) {
+                customerWithId.setStatus(Status.APPROVED);
+                customerWithId.setMonthlyPayment(monthlyPayment);
+                customerRepository.setCustomerStatus(customerWithId.getId(), Status.APPROVED);
+                customerRepository.setCustomerMonthlyPayment(customerWithId.getId(), monthlyPayment);
+            } else {
+                customerWithId.setStatus(Status.DENIED);
+                customerRepository.setCustomerStatus(customerWithId.getId(), Status.DENIED);
+            }
+            return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequest().path("/customer/{id}").
+                build(Collections.singletonMap("id", customerWithId.getId()))).body(customerWithId);
         } else {
             return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
         }

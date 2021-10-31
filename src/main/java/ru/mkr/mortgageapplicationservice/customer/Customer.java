@@ -85,6 +85,14 @@ public class Customer {
     this.durationInMonth = durationInMonth;
   }
 
+  public Status getStatus() {
+     if(this.status != null) {
+       return status;
+     } else {
+       return Status.PROCESSING;
+     }
+  }
+
   public boolean poleNoEmpty() {
     return this.firstName != null &&
             this.secondName != null &&
