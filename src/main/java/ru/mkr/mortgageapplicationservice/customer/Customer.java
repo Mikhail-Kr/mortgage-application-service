@@ -101,4 +101,10 @@ public class Customer {
             this.birthDate != null &&
             this.gender != null;
   }
+
+  public boolean poleNoZero() {
+    return this.salary != 0 &&
+        this.creditAmount != 0 &&
+        this.durationInMonths != 0;
+  }
 }
