@@ -2,11 +2,9 @@ package ru.mkr.mortgageapplicationservice.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import liquibase.pro.packaged.S;
 import org.openapitools.client.api.MortgageCalculatorApi;
 import org.openapitools.client.model.MortgageCalculateParams;
 import org.springframework.http.HttpStatus;
@@ -100,7 +98,7 @@ public class CustomerController {
             MortgageCalculatorApi mortgageCalculatorApi = new MortgageCalculatorApi();
             MortgageCalculateParams calculateParams= new MortgageCalculateParams();
             calculateParams.setCreditAmount(BigDecimal.valueOf(customerWithId.getCreditAmount()));
-            calculateParams.setDurationInMonths(customerWithId.getDurationInMonth());
+            calculateParams.setDurationInMonths(customerWithId.getDurationInMonths());
             BigDecimal monthlyPayment = mortgageCalculatorApi.calculate(calculateParams).getMonthlyPayment();
             if(!customerWithId.poleNoEmpty()) {
                 return ResponseEntity.badRequest().

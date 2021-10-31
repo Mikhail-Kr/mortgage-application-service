@@ -16,9 +16,9 @@
             <column name="gender" type="varchar"/>
             <column name="salary" type="number"/>
             <column name="CREDIT_AMOUNT" type="number"/>
-            <column name="DURATION_IN_MONTH" type="int"/>
+            <column name="DURATION_IN_MONTHS" type="int"/>
             <column name="status" type="varchar"/>
-            <column name="monthly_payment" type="number"/>
+            <column name="monthly_Payment" type="number"/>
         </createTable>
     </changeSet>
 </databaseChangeLog>

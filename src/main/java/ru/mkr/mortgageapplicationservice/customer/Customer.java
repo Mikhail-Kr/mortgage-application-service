@@ -29,8 +29,8 @@ public class Customer {
   private int salary;
   @Column(name = "credit_Amount")
   private int creditAmount;
-  @Column(name = "duration_In_Month")
-  private int durationInMonth;
+  @Column(name = "duration_In_Months")
+  private int durationInMonths;
   @Enumerated(EnumType.STRING)
   @Column(name = "status")
   private Status status;
@@ -52,7 +52,7 @@ public class Customer {
     this.gender = gender;
     this.salary = salary;
     this.creditAmount = creditAmount;
-    this.durationInMonth = durationInMonth;
+    this.durationInMonths = durationInMonth;
     this.status = status;
   }
 
@@ -68,7 +68,7 @@ public class Customer {
     this.gender = gender;
     this.salary = salary;
     this.creditAmount = creditAmount;
-    this.durationInMonth = durationInMonth;
+    this.durationInMonths = durationInMonth;
   }
 
   public Customer(String firstName, String secondName, String lastName,
@@ -82,7 +82,7 @@ public class Customer {
     this.gender = gender;
     this.salary = salary;
     this.creditAmount = creditAmount;
-    this.durationInMonth = durationInMonth;
+    this.durationInMonths = durationInMonth;
   }
 
   public Status getStatus() {

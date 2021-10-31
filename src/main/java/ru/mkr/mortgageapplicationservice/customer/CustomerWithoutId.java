@@ -19,10 +19,10 @@ public class CustomerWithoutId {
   private Gender gender;
   private int salary;
   private int creditAmount;
-  private int durationInMonth;
+  private int durationInMonths;
 
   public CustomerWithoutId() {
-    
+
   }
 
   public CustomerWithoutId(String firstName, String secondName, String lastName,
@@ -36,18 +36,18 @@ public class CustomerWithoutId {
     this.gender = gender;
     this.salary = salary;
     this.creditAmount = creditAmount;
-    this.durationInMonth = durationInMonth;
+    this.durationInMonths = durationInMonth;
   }
 
 
   public Customer getCustomer(CustomerWithoutId customer) {
     return new Customer(generateId(), firstName, secondName, lastName, passport,
-        birthDate, gender, salary, creditAmount, durationInMonth);
+        birthDate, gender, salary, creditAmount, durationInMonths);
   }
 
   public Customer getCustomerWithoutId (CustomerWithoutId customerWithoutId) {
     return new Customer(firstName, secondName, lastName, passport,
-        birthDate, gender, salary, creditAmount, durationInMonth);
+        birthDate, gender, salary, creditAmount, durationInMonths);
   }
 
   private String generateId() {
