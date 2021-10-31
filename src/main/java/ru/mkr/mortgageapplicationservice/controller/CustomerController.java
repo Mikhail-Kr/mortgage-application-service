@@ -32,7 +32,7 @@ public class CustomerController {
         this.customerRepository = customerRepository;
     }
 
-    @Operation(
+/*    @Operation(
             operationId = "getCustomer",
             summary = "Найти заявку по ID",
             description = "Return single customer",
@@ -41,7 +41,7 @@ public class CustomerController {
                             responseCode = "200",
                             description = "OK",
                             content = {
-/*                                    @Content(
+*//*                                    @Content(
                                             mediaType = "application/json",
                                             examples = {
                                                     @ExampleObject(
@@ -61,7 +61,7 @@ public class CustomerController {
                                                                     }"""
                                                     )
                                             }
-                                    ),*/
+                                    ),*//*
                             }
                     ),
                     @ApiResponse(
@@ -80,7 +80,7 @@ public class CustomerController {
         }
         return ResponseEntity.badRequest().
             body(Collections.singletonMap("error", "Application not exist"));
-    }
+    }*/
 
     @Operation(
             responses = {
