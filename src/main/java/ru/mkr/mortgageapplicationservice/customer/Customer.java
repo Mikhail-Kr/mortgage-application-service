@@ -1,5 +1,6 @@
 package ru.mkr.mortgageapplicationservice.customer;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -34,6 +35,7 @@ public class Customer {
   @Enumerated(EnumType.STRING)
   @Column(name = "status")
   private Status status;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   @Column(name = "monthly_payment")
   private BigDecimal monthlyPayment;
 
