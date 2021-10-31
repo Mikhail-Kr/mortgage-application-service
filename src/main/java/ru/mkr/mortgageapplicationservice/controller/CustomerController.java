@@ -41,7 +41,7 @@ public class CustomerController {
                             responseCode = "200",
                             description = "OK",
                             content = {
-                                    @Content(
+/*                                    @Content(
                                             mediaType = "application/json",
                                             examples = {
                                                     @ExampleObject(
@@ -61,7 +61,7 @@ public class CustomerController {
                                                                     }"""
                                                     )
                                             }
-                                    ),
+                                    ),*/
                             }
                     ),
                     @ApiResponse(
@@ -102,7 +102,7 @@ public class CustomerController {
             MortgageCalculateParams calculateParams= new MortgageCalculateParams();
             calculateParams.setCreditAmount(BigDecimal.valueOf(customerWithId.getCreditAmount()));
             calculateParams.setDurationInMonths(customerWithId.getDurationInMonth());
-            var monthlyPayment = mortgageCalculatorApi.calculate(calculateParams).getMonthlyPayment();
+            BigDecimal monthlyPayment = mortgageCalculatorApi.calculate(calculateParams).getMonthlyPayment();
             if(!customerWithId.poleNoEmpty()) {
                 return ResponseEntity.badRequest().
                         body(Collections.singletonMap("error", "one of the fields is null"));
