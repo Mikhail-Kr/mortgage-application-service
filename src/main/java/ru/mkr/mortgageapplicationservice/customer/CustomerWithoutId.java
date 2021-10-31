@@ -21,6 +21,10 @@ public class CustomerWithoutId {
   private int creditAmount;
   private int durationInMonth;
 
+  public CustomerWithoutId() {
+    
+  }
+
   public CustomerWithoutId(String firstName, String secondName, String lastName,
                            String passport, LocalDate birthDate, Gender gender,
                            int salary, int creditAmount, int durationInMonth) {
