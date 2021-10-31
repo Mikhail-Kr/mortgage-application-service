@@ -32,7 +32,7 @@ public class CustomerController {
         this.customerRepository = customerRepository;
     }
 
-/*    @Operation(
+    @Operation(
             operationId = "getCustomer",
             summary = "Найти заявку по ID",
             description = "Return single customer",
@@ -41,7 +41,7 @@ public class CustomerController {
                             responseCode = "200",
                             description = "OK",
                             content = {
-*//*                                    @Content(
+                                    /*@Content(
                                             mediaType = "application/json",
                                             examples = {
                                                     @ExampleObject(
@@ -61,7 +61,7 @@ public class CustomerController {
                                                                     }"""
                                                     )
                                             }
-                                    ),*//*
+                                    ),*/
                             }
                     ),
                     @ApiResponse(
@@ -72,15 +72,15 @@ public class CustomerController {
             }
     )
     @GetMapping("/customer/{id}")
-    public ResponseEntity getByID(@PathVariable("id") String id) {
+    public ResponseEntity getByID(@PathVariable String id) {
         Optional<Customer> userOpt;
         userOpt = customerRepository.findById(id);
         if (userOpt.isPresent()) {
             return ResponseEntity.of(userOpt);
         }
         return ResponseEntity.badRequest().
-            body(Collections.singletonMap("error", "Application not exist"));
-    }*/
+            body(Collections.singletonMap("error", "Customer not exist"));
+    }
 
     @Operation(
             responses = {
@@ -97,7 +97,6 @@ public class CustomerController {
     ResponseEntity<?> createCustomer(@RequestBody CustomerWithoutId customer) {
         Customer customerWithId = customer.getCustomer(customer);
         if (!isExpected(customer)) {
-            customerRepository.save(customerWithId);
             MortgageCalculatorApi mortgageCalculatorApi = new MortgageCalculatorApi();
             MortgageCalculateParams calculateParams= new MortgageCalculateParams();
             calculateParams.setCreditAmount(BigDecimal.valueOf(customerWithId.getCreditAmount()));
@@ -110,11 +109,10 @@ public class CustomerController {
             if(customer.getSalary()/monthlyPayment.doubleValue() >= 2) {
                 customerWithId.setStatus(Status.APPROVED);
                 customerWithId.setMonthlyPayment(monthlyPayment);
-                customerRepository.setCustomerStatus(customerWithId.getId(), Status.APPROVED);
-                customerRepository.setCustomerMonthlyPayment(customerWithId.getId(), monthlyPayment);
+                customerRepository.save(customerWithId);
             } else {
                 customerWithId.setStatus(Status.DENIED);
-                customerRepository.setCustomerStatus(customerWithId.getId(), Status.DENIED);
+                customerRepository.save(customerWithId);
             }
             return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequest().path("/customer/{id}").
                 build(Collections.singletonMap("id", customerWithId.getId()))).body(customerWithId);
