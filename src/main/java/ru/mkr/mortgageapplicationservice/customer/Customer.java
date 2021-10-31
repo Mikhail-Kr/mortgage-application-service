@@ -34,7 +34,7 @@ public class Customer {
   @Enumerated(EnumType.STRING)
   @Column(name = "status")
   private Status status;
-  @Column(name = "monthly_Payment")
+  @Column(name = "monthly_payment")
   private BigDecimal monthlyPayment;
 
   public Customer() {
