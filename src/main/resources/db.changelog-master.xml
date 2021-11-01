@@ -12,7 +12,7 @@
             <column name="SECOND_NAME" type="varchar"/>
             <column name="LAST_NAME" type="varchar"/>
             <column name="passport" type="varchar"/>
-            <column name="BIRTH_DATE" type="varchar"/>
+            <column name="BIRTH_DATE" type="date"/>
             <column name="gender" type="varchar"/>
             <column name="salary" type="number"/>
             <column name="CREDIT_AMOUNT" type="number"/>

@@ -27,9 +27,9 @@ public class Customer {
   @Enumerated(EnumType.STRING)
   private Gender gender;
   @Column(name = "salary")
-  private int salary;
+  private BigDecimal salary;
   @Column(name = "credit_Amount")
-  private int creditAmount;
+  private BigDecimal creditAmount;
   @Column(name = "duration_In_Months")
   private int durationInMonths;
   @Enumerated(EnumType.STRING)
@@ -44,7 +44,7 @@ public class Customer {
 
   public Customer(String id, String firstName, String secondName, String lastName,
                   String passport, LocalDate birthDate, Gender gender,
-                  int salary, int creditAmount, int durationInMonth, Status status) {
+                  BigDecimal salary, BigDecimal creditAmount, int durationInMonth, Status status) {
     this.id = id;
     this.firstName = firstName;
     this.secondName = secondName;
@@ -60,7 +60,7 @@ public class Customer {
 
   public Customer(String id, String firstName, String secondName, String lastName,
                   String passport, LocalDate birthDate, Gender gender,
-                  int salary, int creditAmount, int durationInMonth) {
+                  BigDecimal salary, BigDecimal creditAmount, int durationInMonth) {
     this.id = id;
     this.firstName = firstName;
     this.secondName = secondName;
@@ -75,7 +75,7 @@ public class Customer {
 
   public Customer(String firstName, String secondName, String lastName,
                   String passport, LocalDate birthDate, Gender gender,
-                  int salary, int creditAmount, int durationInMonth) {
+                  BigDecimal salary, BigDecimal creditAmount, int durationInMonth) {
     this.firstName = firstName;
     this.secondName = secondName;
     this.lastName = lastName;
@@ -105,8 +105,8 @@ public class Customer {
   }
 
   public boolean poleNoZero() {
-    return this.salary != 0 &&
-        this.creditAmount != 0 &&
+    return this.salary.compareTo(BigDecimal.ZERO) != 0 &&
+        this.creditAmount.compareTo(BigDecimal.ZERO) != 0 &&
         this.durationInMonths != 0;
   }
 }

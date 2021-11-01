@@ -15,14 +15,4 @@ public interface CustomerRepository
 
   Customer findByFirstNameAndSecondNameAndLastNameAndPassport(String firstName, String secondName,
                                                               String lastName, String passport);
-
-  @Transactional
-  @Modifying
-  @Query(value = "update customer c set c.status = :#{#status} WHERE c.id = :id", nativeQuery = true)
-  void setCustomerStatus(@Param("id") String id, @Param("status") Status status);
-
-  @Transactional
-  @Modifying
-  @Query(value = "update customer c set c.monthly_Payment = :#{#monthly_Payment} WHERE c.id = :id", nativeQuery = true)
-  void setCustomerMonthlyPayment(@Param("id") String id, @Param("monthly_Payment") BigDecimal monthly_Payment);
 }

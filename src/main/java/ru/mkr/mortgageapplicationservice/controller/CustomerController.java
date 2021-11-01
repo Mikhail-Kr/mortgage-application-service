@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.mkr.mortgageapplicationservice.customer.Customer;
 import ru.mkr.mortgageapplicationservice.customer.CustomerRepository;
-import ru.mkr.mortgageapplicationservice.customer.CustomerWithoutId;
 import ru.mkr.mortgageapplicationservice.customer.Status;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Collections;
 import java.util.Optional;
 
@@ -39,27 +39,12 @@ public class CustomerController {
               responseCode = "200",
               description = "OK",
               content = {
-                                    /*@Content(
-                                            mediaType = "application/json",
-                                            examples = {
-                                                    @ExampleObject(
-                                                            value = """
-                                                                    {
-                                                                    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                                                                    "firstName": "Иван",
-                                                                    "secondName": "Иванович",
-                                                                    "lastName": "Иванов",
-                                                                    "passport": "9410123456",
-                                                                    "birthDate": "1990-10-23",
-                                                                    "gender": "MALE",
-                                                                    "salary": 80000,
-                                                                    "creditAmount": 3000000,
-                                                                    "durationInMonths": 120,
-                                                                    "status": "PROCESSING"
-                                                                    }"""
-                                                    )
-                                            }
-                                    ),*/
+                  @Content(
+                      mediaType = "application/json",
+                      schema = @Schema(
+                          implementation = Customer.class
+                      )
+                  ),
               }
           ),
           @ApiResponse(
@@ -70,17 +55,22 @@ public class CustomerController {
       }
   )
   @GetMapping("/customer/{id}")
-  public ResponseEntity getByID(@PathVariable String id) {
-    Optional<Customer> userOpt;
-    userOpt = customerRepository.findById(id);
-    if (userOpt.isPresent()) {
-      return ResponseEntity.of(userOpt);
+  public ResponseEntity<?> getByID(@PathVariable String id) {
+    if (id.length() != 36) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+          .body(Collections.singletonMap("error", "invalid id"));
     }
-    return ResponseEntity.badRequest().
-        body(Collections.singletonMap("error", "Customer not exist"));
+    Optional<Customer> savedCustomer;
+    savedCustomer = customerRepository.findById(id);
+    if (savedCustomer.isPresent()) {
+      return ResponseEntity.of(savedCustomer);
+    }
+    return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
   }
 
   @Operation(
+      operationId = "createCustomer",
+      summary = "Оформить заявку на ипотеку",
       responses = {
           @ApiResponse(
               responseCode = "200",
@@ -90,25 +80,24 @@ public class CustomerController {
           )
       }
   )
-
   @PostMapping
   ResponseEntity<?> createCustomer(@RequestBody CustomerWithoutId customer) {
     Customer customerWithId = customer.getCustomer(customer);
     if (!isExpected(customer)) {
       if (!customerWithId.poleNoZero()) {
         return ResponseEntity.badRequest().
-            body(Collections.singletonMap("error", "one of the fields is null"));
+            body(Collections.singletonMap("error", "one of the fields is zero"));
       }
       MortgageCalculatorApi mortgageCalculatorApi = new MortgageCalculatorApi();
       MortgageCalculateParams calculateParams = new MortgageCalculateParams();
-      calculateParams.setCreditAmount(BigDecimal.valueOf(customerWithId.getCreditAmount()));
+      calculateParams.setCreditAmount(customerWithId.getCreditAmount());
       calculateParams.setDurationInMonths(customerWithId.getDurationInMonths());
       BigDecimal monthlyPayment = mortgageCalculatorApi.calculate(calculateParams).getMonthlyPayment();
       if (!customerWithId.poleNoEmpty()) {
         return ResponseEntity.badRequest().
             body(Collections.singletonMap("error", "one of the fields is null"));
       }
-      if (customer.getSalary() / monthlyPayment.doubleValue() >= 2) {
+      if (customer.getSalary().divide(monthlyPayment, 0, RoundingMode.DOWN).compareTo(new BigDecimal(2)) == 1) {
         customerWithId.setStatus(Status.APPROVED);
         customerWithId.setMonthlyPayment(monthlyPayment);
         customerRepository.save(customerWithId);
@@ -119,7 +108,7 @@ public class CustomerController {
       return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequest().path("/customer/{id}").
           build(Collections.singletonMap("id", customerWithId.getId()))).body(customerWithId);
     } else {
-      return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<String>(HttpStatus.CONFLICT);
     }
   }
 

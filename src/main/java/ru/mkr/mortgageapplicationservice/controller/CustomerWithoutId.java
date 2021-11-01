@@ -1,9 +1,12 @@
-package ru.mkr.mortgageapplicationservice.customer;
+package ru.mkr.mortgageapplicationservice.controller;
 
 import lombok.Data;
+import ru.mkr.mortgageapplicationservice.customer.Customer;
+import ru.mkr.mortgageapplicationservice.customer.Gender;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -17,8 +20,8 @@ public class CustomerWithoutId {
   private LocalDate birthDate;
   @Enumerated(EnumType.STRING)
   private Gender gender;
-  private int salary;
-  private int creditAmount;
+  private BigDecimal salary;
+  private BigDecimal creditAmount;
   private int durationInMonths;
 
   public CustomerWithoutId() {
@@ -27,7 +30,7 @@ public class CustomerWithoutId {
 
   public CustomerWithoutId(String firstName, String secondName, String lastName,
                            String passport, LocalDate birthDate, Gender gender,
-                           int salary, int creditAmount, int durationInMonth) {
+                           BigDecimal salary, BigDecimal creditAmount, int durationInMonth) {
     this.firstName = firstName;
     this.secondName = secondName;
     this.lastName = lastName;
@@ -42,11 +45,6 @@ public class CustomerWithoutId {
 
   public Customer getCustomer(CustomerWithoutId customer) {
     return new Customer(generateId(), firstName, secondName, lastName, passport,
-        birthDate, gender, salary, creditAmount, durationInMonths);
-  }
-
-  public Customer getCustomerWithoutId (CustomerWithoutId customerWithoutId) {
-    return new Customer(firstName, secondName, lastName, passport,
         birthDate, gender, salary, creditAmount, durationInMonths);
   }
 
